@@ -57,7 +57,7 @@ def client():
 
 def test_validate_exits_normal(catalog_service):
     catalog_service.assert_retcode(
-        0, '--config', 'repo.json', '--validate',
+        0, '--config', '../scripts/repo.json', '--validate',
         '--port', '18088', '--sqlite')
 
 
