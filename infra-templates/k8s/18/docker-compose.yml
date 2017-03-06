@@ -56,26 +56,15 @@ etcd:
     labels:
         io.rancher.scheduler.affinity:host_label_soft: etcd=true
         io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
-        io.rancher.sidekicks: data
     environment:
         RANCHER_DEBUG: 'true'
         EMBEDDED_BACKUPS: '${EMBEDDED_BACKUPS}'
         BACKUP_PERIOD: '${BACKUP_PERIOD}'
         BACKUP_RETENTION: '${BACKUP_RETENTION}'
     volumes:
-    - etcd:/pdata
-    - /var/etcd/backups:/data-backup
-    volumes_from:
-    - data
-
-data:
-    image: busybox
-    entrypoint: /bin/true
-    net: none
-    volumes:
-    - /data
-    labels:
-        io.rancher.container.start_once: 'true'
+    - etcd:/pdata:z
+    - data:/data:z
+    - /var/etcd/backups:/data-backup:z
 
 kubernetes:
     labels:
