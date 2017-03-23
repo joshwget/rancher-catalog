@@ -1,0 +1,4 @@
+version: '2'
+services:
+  k8sauth:
+    image: joshwget/k8sauth
