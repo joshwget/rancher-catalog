@@ -102,16 +102,25 @@ kubernetes:
         - --insecure-port=80
         - --cloud-provider=${CLOUD_PROVIDER}
         - --allow_privileged=true
-        - --admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ResourceQuota,ServiceAccount
+        # - --admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ResourceQuota,ServiceAccount
         - --client-ca-file=/etc/kubernetes/ssl/ca.pem
         - --tls-cert-file=/etc/kubernetes/ssl/cert.pem
         - --tls-private-key-file=/etc/kubernetes/ssl/key.pem
         - --runtime-config=batch/v2alpha1
+        - --authentication-token-webhook-config-file=/etc/k/config3
+        - --runtime-config=authentication.k8s.io/v1beta1=true
+        - --authorization-mode=RBAC
+        - --runtime-config=rbac.authorization.k8s.io/v1alpha1=true
+        - --authorization-rbac-super-user=admin
+        - --authentication-token-webhook-cache-ttl=3s
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
     image: rancher/k8s:v1.5.4-rancher1-3
     links:
         - etcd
+        - rancher-kubernetes-auth
+    volumes:
+        - /etc/k:/etc/k
 
 kube-hostname-updater:
     net: container:kubernetes
@@ -200,6 +209,11 @@ rancher-ingress-controller:
         - --provider=rancher
     links:
         - kubernetes
+
+rancher-kubernetes-auth:
+    image: joshwget/kubernetes-auth
+    labels:
+        io.rancher.scheduler.affinity:host_label_soft: orchestration=true
 
 addon-starter:
     image: rancher/k8s:v1.5.4-rancher1-3
