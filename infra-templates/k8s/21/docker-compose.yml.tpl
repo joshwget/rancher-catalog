@@ -123,6 +123,7 @@ kubernetes:
         - /etc/k:/etc/k
     ports:
         - 6443:6443
+        - 80:80
 
 kube-hostname-updater:
     net: container:kubernetes
