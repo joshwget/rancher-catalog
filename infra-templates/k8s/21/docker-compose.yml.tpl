@@ -202,7 +202,7 @@ rancher-ingress-controller:
         - kubernetes
 
 addon-starter:
-    image: rancher/k8s:v1.5.4-rancher1-3
+    image: joshwget/addon-starter
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
