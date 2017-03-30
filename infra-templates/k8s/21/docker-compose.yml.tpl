@@ -121,6 +121,8 @@ kubernetes:
         - rancher-kubernetes-auth
     volumes:
         - /etc/k:/etc/k
+    ports:
+        - 6443:6443
 
 kube-hostname-updater:
     net: container:kubernetes
