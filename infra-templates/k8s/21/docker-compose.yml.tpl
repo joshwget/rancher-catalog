@@ -119,6 +119,9 @@ kubernetes:
         - etcd
     volumes:
         - /etc/k:/etc/k
+    ports:
+        - 80:80
+        - 6443:6443
 
 kube-hostname-updater:
     net: container:kubernetes
