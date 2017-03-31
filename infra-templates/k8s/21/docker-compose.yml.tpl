@@ -107,6 +107,11 @@ kubernetes:
         - --tls-cert-file=/etc/kubernetes/ssl/cert.pem
         - --tls-private-key-file=/etc/kubernetes/ssl/key.pem
         - --runtime-config=batch/v2alpha1
+        - --basic-auth-file=/etc/k/basicauthconfig
+        - --runtime-config=authentication.k8s.io/v1beta1=true
+        - --authorization-mode=RBAC
+        - --runtime-config=rbac.authorization.k8s.io/v1alpha1=true
+        - --authorization-rbac-super-user=admin
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
     image: rancher/k8s:v1.5.4-rancher1-3
