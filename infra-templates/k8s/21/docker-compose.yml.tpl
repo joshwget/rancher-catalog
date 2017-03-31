@@ -117,6 +117,8 @@ kubernetes:
     image: rancher/k8s:v1.5.4-rancher1-3
     links:
         - etcd
+    volumes:
+        - /etc/k:/etc/k
 
 kube-hostname-updater:
     net: container:kubernetes
