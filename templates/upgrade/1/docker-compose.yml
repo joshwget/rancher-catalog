@@ -1,0 +1,8 @@
+aaa:
+  image: nginx
+  labels:
+    a: "{{ .Release.Version }}"
+    b: "{{ .Release.PreviousVersion }}"
+
+bbb:
+  image: nginx
