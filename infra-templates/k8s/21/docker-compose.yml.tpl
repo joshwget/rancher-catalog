@@ -20,7 +20,7 @@ kubelet:
         - --network-plugin=cni
         - --network-plugin-dir=/etc/cni/managed.d
         - --pod-infra-container-image=${POD_INFRA_CONTAINER_IMAGE}
-    image: rancher/k8s:v1.5.4-rancher1-3
+    image: joshwget/k8s
     volumes:
         - /run:/run
         - /var/run:/var/run
@@ -50,7 +50,7 @@ proxy:
         - --master=http://kubernetes.kubernetes.rancher.internal
         - --v=2
         - --healthz-bind-address=0.0.0.0
-    image: rancher/k8s:v1.5.4-rancher1-3
+    image: joshwget/k8s
     privileged: true
     net: host
     links:
@@ -115,7 +115,7 @@ kubernetes:
         - --authentication-token-webhook-cache-ttl=3s
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
-    image: rancher/k8s:v1.5.4-rancher1-3
+    image: joshwget/k8s
     links:
         - etcd
         - rancher-kubernetes-auth
@@ -153,7 +153,7 @@ scheduler:
         - kube-scheduler
         - --master=http://kubernetes.kubernetes.rancher.internal
         - --address=0.0.0.0
-    image: rancher/k8s:v1.5.4-rancher1-3
+    image: joshwget/k8s
     {{- if eq .Values.CONSTRAINT_TYPE "required" }}
     labels:
         io.rancher.scheduler.affinity:host_label: orchestration=true
@@ -170,7 +170,7 @@ controller-manager:
         - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
         - --root-ca-file=/etc/kubernetes/ssl/ca.pem
         - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
-    image: rancher/k8s:v1.5.4-rancher1-3
+    image: joshwget/k8s
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
@@ -219,7 +219,7 @@ rancher-kubernetes-auth:
         io.rancher.scheduler.affinity:host_label_soft: orchestration=true
 
 addon-starter:
-    image: rancher/k8s:v1.5.4-rancher1-3
+    image: joshwget/k8s
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
