@@ -216,7 +216,11 @@ rancher-ingress-controller:
 rancher-kubernetes-auth:
     image: joshwget/kubernetes-auth
     labels:
-        io.rancher.scheduler.affinity:host_label_soft: orchestration=true
+        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
+        io.rancher.scheduler.affinity:host_label: orchestration=true
+        {{- end }}
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent.role: environmentAdmin
 
 addon-starter:
     image: joshwget/k8s
