@@ -38,6 +38,14 @@ kubelet:
     links:
         - kubernetes
 
+{{- if eq .Values.CONSTRAINT_TYPE "required" }}
+kubelet-master:
+    extends:
+        service: kubelet
+    command:
+        - --register-schedulable=false
+{{- end }}
+
 proxy:
     labels:
         io.rancher.container.dns: "true"
