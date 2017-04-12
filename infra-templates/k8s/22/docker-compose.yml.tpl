@@ -28,7 +28,7 @@ kubelet:
     volumes:
         - /run:/run
         - /var/run:/var/run
-        - /sys:/sys:ro
+        - /sys:/sys
         - /var/lib/docker:/var/lib/docker
         - /var/lib/kubelet:/var/lib/kubelet:shared
         - /var/log/containers:/var/log/containers
