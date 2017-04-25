@@ -107,7 +107,7 @@ kubernetes:
         - --tls-cert-file=/etc/kubernetes/ssl/cert.pem
         - --tls-private-key-file=/etc/kubernetes/ssl/key.pem
         - --runtime-config=batch/v2alpha1
-        - --authentication-token-webhook-config-file=/etc/k/config
+        - --authentication-token-webhook-config-file=/etc/kubernetes/authconfig
         - --runtime-config=authentication.k8s.io/v1beta1=true
         - --authorization-mode=RBAC
         - --runtime-config=rbac.authorization.k8s.io/v1alpha1=true
@@ -119,8 +119,6 @@ kubernetes:
     links:
         - etcd
         - rancher-kubernetes-auth
-    volumes:
-        - /etc/k:/etc/k
     ports:
         - 6443:6443
         - 80:80
