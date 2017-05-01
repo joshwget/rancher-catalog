@@ -111,7 +111,6 @@ kubernetes:
         - --runtime-config=authentication.k8s.io/v1beta1=true
         - --authorization-mode=RBAC
         - --runtime-config=rbac.authorization.k8s.io/v1alpha1=true
-        - --authorization-rbac-super-user=admin
         - --authentication-token-webhook-cache-ttl=3s
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
