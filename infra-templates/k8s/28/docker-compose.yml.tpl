@@ -24,8 +24,6 @@ kubelet:
         {{- else if (ne .Values.POD_INFRA_CONTAINER_IMAGE "") }}
         - --pod-infra-container-image=${POD_INFRA_CONTAINER_IMAGE}
         {{- end }}
-    environment:
-        RBAC: ${RBAC}
     image: rancher/k8s:v1.6.2-rancher3-1
     volumes:
         - /run:/run
@@ -70,8 +68,6 @@ kubelet-unschedulable:
         - --pod-infra-container-image=${POD_INFRA_CONTAINER_IMAGE}
         {{- end }}
         - --register-schedulable=false
-    environment:
-        RBAC: ${RBAC}
     image: rancher/k8s:v1.6.2-rancher3-1
     volumes:
         - /run:/run
@@ -103,8 +99,6 @@ proxy:
         - --master=http://kubernetes.kubernetes.rancher.internal
         - --v=2
         - --healthz-bind-address=0.0.0.0
-    environment:
-        RBAC: ${RBAC}
     image: rancher/k8s:v1.6.2-rancher3-1
     privileged: true
     net: host
@@ -151,21 +145,18 @@ kubernetes:
         - --tls-cert-file=/etc/kubernetes/ssl/cert.pem
         - --tls-private-key-file=/etc/kubernetes/ssl/key.pem
         - --runtime-config=batch/v2alpha1
-        {{- if eq .Values.RBAC "true" }}
         - --authentication-token-webhook-config-file=/etc/kubernetes/authconfig
         - --runtime-config=authentication.k8s.io/v1beta1=true
+        {{- if eq .Values.RBAC "true" }}
         - --authorization-mode=RBAC
         - --runtime-config=rbac.authorization.k8s.io/v1alpha1=true
         {{- end }}
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
-        RBAC: ${RBAC}
     image: rancher/k8s:v1.6.2-rancher3-1
     links:
         - etcd
-        {{- if eq .Values.RBAC "true" }}
         - rancher-kubernetes-auth
-        {{- end }}
 
 kube-hostname-updater:
     net: container:kubernetes
@@ -195,8 +186,6 @@ scheduler:
         - kube-scheduler
         - --master=http://kubernetes.kubernetes.rancher.internal
         - --address=0.0.0.0
-    environment:
-        RBAC: ${RBAC}
     image: rancher/k8s:v1.6.2-rancher3-1
     {{- if eq .Values.CONSTRAINT_TYPE "required" }}
     labels:
@@ -214,8 +203,6 @@ controller-manager:
         - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
         - --root-ca-file=/etc/kubernetes/ssl/ca.pem
         - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
-    environment:
-        RBAC: ${RBAC}
     image: rancher/k8s:v1.6.2-rancher3-1
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
@@ -259,7 +246,6 @@ rancher-ingress-controller:
     links:
         - kubernetes
 
-{{- if eq .Values.RBAC "true" }}
 rancher-kubernetes-auth:
     image: rancher/kubernetes-auth:v0.0.1
     labels:
@@ -268,7 +254,6 @@ rancher-kubernetes-auth:
         {{- end }}
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
-{{- end }}
 
 {{- if eq .Values.ENABLE_ADDONS "true" }}
 addon-starter:
@@ -283,7 +268,6 @@ addon-starter:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
         REGISTRY: ${REGISTRY}
         INFLUXDB_HOST_PATH: ${INFLUXDB_HOST_PATH}
-        RBAC: ${RBAC}
     command:
         - addons-update.sh
     links:
