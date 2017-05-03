@@ -152,10 +152,6 @@ kubernetes:
         - --runtime-config=batch/v2alpha1
         - --authentication-token-webhook-config-file=/etc/kubernetes/authconfig
         - --runtime-config=authentication.k8s.io/v1beta1=true
-        {{- if eq .Values.RBAC "true" }}
-        - --authorization-mode=RBAC
-        - --runtime-config=rbac.authorization.k8s.io/v1alpha1=true
-        {{- end }}
         - --insecure-port=80
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
