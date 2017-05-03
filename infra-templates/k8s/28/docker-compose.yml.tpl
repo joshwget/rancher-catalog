@@ -157,6 +157,8 @@ kubernetes:
     links:
         - etcd
         - rancher-kubernetes-auth
+    ports:
+        - 6443:6443
 
 kube-hostname-updater:
     net: container:kubernetes
