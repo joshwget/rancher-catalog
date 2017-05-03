@@ -143,7 +143,6 @@ kubernetes:
         - --service-cluster-ip-range=10.43.0.0/16
         - --etcd-servers=http://etcd.kubernetes.rancher.internal:2379
         - --insecure-bind-address=0.0.0.0
-        - --insecure-port=80
         - --cloud-provider=${CLOUD_PROVIDER}
         - --allow_privileged=true
         - --admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ResourceQuota,ServiceAccount
@@ -156,6 +155,7 @@ kubernetes:
         - --runtime-config=authentication.k8s.io/v1beta1=true
         - --authorization-mode=RBAC
         - --runtime-config=rbac.authorization.k8s.io/v1alpha1=true
+        - --insecure-port=80
         {{- end }}
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
@@ -163,7 +163,11 @@ kubernetes:
     image: joshwget/k8s
     links:
         - etcd
+        {{- if eq .Values.RBAC "true" }}
         - rancher-kubernetes-auth
+        {{- end }}
+    ports:
+        - 6443:6443
 
 kube-hostname-updater:
     net: container:kubernetes
