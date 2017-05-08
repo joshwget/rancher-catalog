@@ -188,23 +188,6 @@ rancher-kubernetes-agent:
     links:
         - kubernetes
 
-rancher-ingress-controller:
-    image: rancher/lb-service-rancher:v0.6.1
-    labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
-        io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
-        io.rancher.container.create_agent: "true"
-        io.rancher.container.agent.role: environment
-    environment:
-        KUBERNETES_URL: http://kubernetes.kubernetes.rancher.internal
-    command:
-        - lb-controller
-        - --controller=kubernetes
-        - --provider=rancher
-    links:
-        - kubernetes
-
 addon-starter:
     image: rancher/k8s:v1.5.4-rancher1-4
     labels:
