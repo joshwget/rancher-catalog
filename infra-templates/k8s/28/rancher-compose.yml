@@ -41,10 +41,7 @@
     label: Enable Rancher Ingress Controller
     required: true
     default: true
-    type: enum
-    options:
-     - true
-     - false
+    type: boolean
   - variable: ENABLE_ADDONS
     label: Enable Kubernetes Add-ons
     description: Setting this to `false` will disable Dashboard, Helm, SkyDNS, and other Kubernetes add-on services. This is meant for advanced users who want to deploy custom versions of these add-ons.
