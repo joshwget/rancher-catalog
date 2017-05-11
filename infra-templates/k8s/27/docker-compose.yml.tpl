@@ -164,7 +164,8 @@ controller-manager:
         - --root-ca-file=/etc/kubernetes/ssl/ca.pem
         - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
         - --allocate-node-cidrs=true
-        - --cluster-cidr=10.42.0.0/16
+        #- --cluster-cidr=10.42.0.0/16
+        - --cluster-cidr=10.244.0.0/14
     image: rancher/k8s:v1.5.4-rancher1-4
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
