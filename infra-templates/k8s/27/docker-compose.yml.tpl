@@ -25,7 +25,7 @@ kubelet:
         {{- else if (ne .Values.POD_INFRA_CONTAINER_IMAGE "") }}
         - --pod-infra-container-image=${POD_INFRA_CONTAINER_IMAGE}
         {{- end }}
-    image: rancher/k8s:v1.5.4-rancher1-4
+    image: joshwget/k8s
     volumes:
         - /run:/run
         - /var/run:/var/run
@@ -55,7 +55,7 @@ proxy:
         - --master=http://kubernetes.kubernetes.rancher.internal
         - --v=2
         - --healthz-bind-address=0.0.0.0
-    image: rancher/k8s:v1.5.4-rancher1-4
+    image: joshwget/k8s
     privileged: true
     net: host
     links:
@@ -114,7 +114,7 @@ kubernetes:
         - --runtime-config=batch/v2alpha1
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
-    image: rancher/k8s:v1.5.4-rancher1-4
+    image: joshwget/k8s
     links:
         - etcd
 
@@ -146,7 +146,7 @@ scheduler:
         - kube-scheduler
         - --master=http://kubernetes.kubernetes.rancher.internal
         - --address=0.0.0.0
-    image: rancher/k8s:v1.5.4-rancher1-4
+    image: joshwget/k8s
     {{- if eq .Values.CONSTRAINT_TYPE "required" }}
     labels:
         io.rancher.scheduler.affinity:host_label: orchestration=true
@@ -166,7 +166,7 @@ controller-manager:
         - --allocate-node-cidrs=true
         #- --cluster-cidr=10.42.0.0/16
         - --cluster-cidr=10.244.0.0/14
-    image: rancher/k8s:v1.5.4-rancher1-4
+    image: joshwget/k8s
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
@@ -210,7 +210,7 @@ rancher-ingress-controller:
         - kubernetes
 
 addon-starter:
-    image: rancher/k8s:v1.5.4-rancher1-4
+    image: joshwget/k8s
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
