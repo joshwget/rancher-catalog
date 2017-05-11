@@ -169,7 +169,7 @@ kubectld:
         initializing_timeout: 60000
         reinitializing_timeout: 60000
 
-
+{{- if eq .Values.ENABLE_RANCHER_INGRESS_CONTROLLER "true" }}
 rancher-ingress-controller:
     health_check:
         request_line: GET /healthz HTTP/1.0
@@ -180,3 +180,4 @@ rancher-ingress-controller:
         healthy_threshold: 2
         initializing_timeout: 60000
         reinitializing_timeout: 60000
+{{- end }}
