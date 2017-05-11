@@ -26,10 +26,7 @@
     label: Kubernetes RBAC
     required: true
     default: false
-    type: enum
-    options:
-     - true
-     - false
+    type: boolean
   - variable: REGISTRY
     description: The registry to pull addon images and the optional pod infra container image. This should be set to the private registry from which the images for addon-services (i.e. helm, heapster, dashboard, dns) and the pod infra container image should be pulled.
     label: Private Registry for Add-Ons and Pod Infra Container Image
@@ -47,10 +44,7 @@
     description: Setting this to `false` will disable Dashboard, Helm, SkyDNS, and other Kubernetes add-on services. This is meant for advanced users who want to deploy custom versions of these add-ons.
     required: true
     default: true
-    type: enum
-    options:
-     - true
-     - false
+    type: boolean
   - variable: POD_INFRA_CONTAINER_IMAGE
     label: Pod Infra Container Image
     description: The image whose network/ipc namespaces containers in each pod will use. It uses kubelet default if left empty. Do not add the private registry to this field, update the `Private Registry for Add-Ons and Pod Infra Container Image` field with the registry information.
@@ -169,7 +163,7 @@ kubectld:
         initializing_timeout: 60000
         reinitializing_timeout: 60000
 
-
+{{- if eq .Values.ENABLE_RANCHER_INGRESS_CONTROLLER "true" }}
 rancher-ingress-controller:
     health_check:
         request_line: GET /healthz HTTP/1.0
@@ -180,3 +174,4 @@ rancher-ingress-controller:
         healthy_threshold: 2
         initializing_timeout: 60000
         reinitializing_timeout: 60000
+{{- end }}
