@@ -20,6 +20,7 @@ kubelet:
         #- --network-plugin=cni
         #- --network-plugin-dir=/etc/cni/managed.d
         - --network-plugin=kubenet
+        - --network-plugin-dir=/cni
         {{- if and (ne .Values.REGISTRY "") (ne .Values.POD_INFRA_CONTAINER_IMAGE "") }}
         - --pod-infra-container-image=${REGISTRY}/${POD_INFRA_CONTAINER_IMAGE}
         {{- else if (ne .Values.POD_INFRA_CONTAINER_IMAGE "") }}
