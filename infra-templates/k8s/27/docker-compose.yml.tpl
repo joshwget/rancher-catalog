@@ -104,7 +104,7 @@ kubernetes:
         - kube-apiserver
         #- --service-cluster-ip-range=10.43.0.0/16
         #- --service-cluster-ip-range=10.0.0.0/16
-        - --service-clister-ip-range=10.244.0.0/14
+        - --service-cluster-ip-range=10.244.0.0/14
         - --etcd-servers=http://etcd.kubernetes.rancher.internal:2379
         - --insecure-bind-address=0.0.0.0
         - --insecure-port=80
