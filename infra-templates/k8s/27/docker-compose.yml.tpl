@@ -15,7 +15,7 @@ kubelet:
         - --register-node=true
         - --cloud-provider=${CLOUD_PROVIDER}
         - --healthz-bind-address=0.0.0.0
-        - --cluster-dns=10.43.0.10
+        - --cluster-dns=10.244.0.2
         - --cluster-domain=cluster.local
         #- --network-plugin=cni
         #- --network-plugin-dir=/etc/cni/managed.d
