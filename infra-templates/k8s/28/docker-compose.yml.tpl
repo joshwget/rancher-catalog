@@ -96,7 +96,7 @@ proxy:
         {{- end }}
     command:
         - kube-proxy
-        - --master=http://kubernetes.kubernetes.rancher.internal
+        - --master=http://kubernetes.kubernetes.rancher.internal:6443
         - --v=2
         - --healthz-bind-address=0.0.0.0
     image: rancher/k8s:v1.6.2-rancher3-3
@@ -137,7 +137,7 @@ kubernetes:
         - --service-cluster-ip-range=10.43.0.0/16
         - --etcd-servers=http://etcd.kubernetes.rancher.internal:2379
         - --insecure-bind-address=0.0.0.0
-        - --insecure-port=80
+        - --insecure-port=0
         - --cloud-provider=${CLOUD_PROVIDER}
         - --allow_privileged=true
         - --admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ResourceQuota,ServiceAccount
@@ -184,7 +184,7 @@ kubectld:
 scheduler:
     command:
         - kube-scheduler
-        - --master=http://kubernetes.kubernetes.rancher.internal
+        - --master=http://kubernetes.kubernetes.rancher.internal:6443
         - --address=0.0.0.0
     image: rancher/k8s:v1.6.2-rancher3-3
     {{- if eq .Values.CONSTRAINT_TYPE "required" }}
@@ -239,7 +239,7 @@ rancher-ingress-controller:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environment
     environment:
-        KUBERNETES_URL: http://kubernetes.kubernetes.rancher.internal
+        KUBERNETES_URL: http://kubernetes.kubernetes.rancher.internal:6443
     command:
         - lb-controller
         - --controller=kubernetes
