@@ -231,7 +231,7 @@ rancher-kubernetes-agent:
 
 {{- if eq .Values.ENABLE_RANCHER_INGRESS_CONTROLLER "true" }}
 rancher-ingress-controller:
-    image: joshwget/kubernetes-auth:agent-base
+    image: joshwget/lb-service-rancher:agent-base
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
