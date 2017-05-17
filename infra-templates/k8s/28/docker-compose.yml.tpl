@@ -268,7 +268,7 @@ rancher-kubernetes-auth:
 
 {{- if eq .Values.ENABLE_ADDONS "true" }}
 addon-starter:
-    image: rancher/k8s:v1.6.2-rancher3-3
+    image: joshwget/k8s
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
