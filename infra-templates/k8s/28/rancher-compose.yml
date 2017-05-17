@@ -91,8 +91,7 @@ kubernetes:
         sans:
         - "IP:10.43.0.1"
     health_check:
-        request_line: GET /healthz HTTP/1.0
-        port: 80
+        port: 6443
         interval: 2000
         response_timeout: 2000
         unhealthy_threshold: 3
