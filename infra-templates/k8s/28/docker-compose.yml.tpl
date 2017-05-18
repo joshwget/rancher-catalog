@@ -177,6 +177,7 @@ kubectld:
         - sleep
         - infinity
     image: joshwget/kubectld
+    privileged: true
 
 scheduler:
     command:
