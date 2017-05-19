@@ -230,7 +230,7 @@ rancher-kubernetes-agent:
 
 {{- if eq .Values.ENABLE_RANCHER_INGRESS_CONTROLLER "true" }}
 rancher-ingress-controller:
-    image: rancher/lb-service-rancher:v0.7.3
+    image: joshwget/lb-controller
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
