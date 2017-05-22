@@ -1,8 +1,9 @@
 .catalog:
   name: Kubernetes
-  version: v1.6.2-rancher3-3
+  version: v1.6.2-rancher3-4
   description: Rancher Kubernetes service
   minimum_rancher_version: v1.6.0-alpha1
+  upgrade_from: 0.0.0
   questions:
   - variable: CONSTRAINT_TYPE
     label: Plane Isolation
@@ -56,23 +57,54 @@
     description: "Write Heapster metrics to an absolute path on the host. This may be network-attached storage."
     required: false
     type: string
-  - variable: EMBEDDED_BACKUPS
-    label: Enable Backups
-    description: "Periodically backup state to /var/etcd/backups. Mount network storage here on all hosts before continuing"
+
+  - variable: ANALYTICS
+    label: Google Analytics
+    description: Send analytical events to Google
     required: true
     default: true
     type: boolean
-  - variable: BACKUP_PERIOD
-    label: Backup Creation Period
-    description: Create a backup after this amount of time passes. Must conform to duration format
+  - variable: SIZE
+    label: Size
+    description: Number of Etcd members to create
     required: true
-    default: 15m0s
+    default: 3
+    type: int
+  - variable: ENABLE_BACKUPS
+    label: Enable Backups
+    description: Periodically create backups. Enables automatic disaster recovery except for self-hosted clusters.
+    default: true
+    type: boolean
+  - variable: STORAGE_DRIVER
+    label: Storage Driver
+    description: If using PersistentVolume storage type, specify the driver to use.
+    required: false
+    default: rancher-nfs
+    type: enum
+    options:
+    - rancher-efs
+    - rancher-nfs
+  - variable: BACKUP_INTERVAL
+    label: Backup Interval
+    description: The interval between two backups.
+    required: true
+    default: 45m0s
     type: string
-  - variable: BACKUP_RETENTION
-    label: Backup Retention Period
-    description: Expire a backup after this amount of time passes. Must conform to duration format
+  - variable: BACKUP_COUNT
+    label: Backup Count
+    description: Maximum number of backups to retain. Setting to 0 disables backups and will be unable to recover from majority loss.
     required: true
-    default: 24h
+    default: 32
+    type: int
+  - variable: CLEANUP_BACKUPS_ON_DELETE
+    label: Cleanup Backups
+    description: Delete backups when the cluster is deleted.
+    default: false
+    type: boolean
+  - variable: RESTORE_FROM
+    label: Restore Cluster
+    description: "Restore a cluster by service name or id. Example: etcd-1s42"
+    required: false
     type: string
   - variable: ETCD_HEARTBEAT_INTERVAL
     label: Etcd Heartbeat Interval
@@ -86,6 +118,7 @@
     required: true
     default: 5000
     type: int
+
 kubernetes:
     metadata:
         sans:
@@ -100,25 +133,6 @@ kubernetes:
         initializing_timeout: 60000
         reinitializing_timeout: 60000
     retain_ip: true
-
-etcd:
-    retain_ip: true
-    scale_policy:
-        increment: 1
-        max: 3
-        min: 1
-    health_check:
-        port: 2378
-        request_line: GET /health HTTP/1.0
-        interval: 5000
-        response_timeout: 3000
-        unhealthy_threshold: 3
-        healthy_threshold: 2
-        initializing_timeout: 120000
-        reinitializing_timeout: 120000
-        recreate_on_quorum_strategy_config:
-            quorum: 2
-        strategy: recreateOnQuorum
 
 rancher-kubernetes-agent:
     health_check:
