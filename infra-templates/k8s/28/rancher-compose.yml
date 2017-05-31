@@ -4,15 +4,6 @@
   description: Rancher Kubernetes service
   minimum_rancher_version: v1.6.0-alpha1
   questions:
-  - variable: CONSTRAINT_TYPE
-    label: Plane Isolation
-    description: Isolate the data, orchestration and compute planes via host labels. Set to required when running in production.
-    required: true
-    default: none
-    type: enum
-    options:
-    - none
-    - required
   - variable: CLOUD_PROVIDER
     label: Cloud Provider
     description: The cloud provider on which Kubernetes is running
