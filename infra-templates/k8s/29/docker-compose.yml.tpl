@@ -229,6 +229,7 @@ controller-manager:
         - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
     image: rancher/k8s:v1.6.2-rancher3-3
     labels:
+        io.rancher.scheduler.global: "true"
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
         {{- end }}
