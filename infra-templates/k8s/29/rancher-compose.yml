@@ -9,7 +9,7 @@
     label: Plane Isolation
     description: Isolate the data, orchestration and compute planes via host labels. Set to required when running in production.
     required: true
-    default: none
+    default: required
     type: enum
     options:
     - none
