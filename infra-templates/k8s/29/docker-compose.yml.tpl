@@ -25,9 +25,7 @@ etcd:
         io.rancher.operator.etcd.version: '3.1.8'
         io.rancher.operator.etcd.paused: 'false'
         io.rancher.operator.etcd.antiaffinity: 'true'
-{{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.operator.etcd.nodeselector: 'etcd=true'
-{{- end }}
         io.rancher.operator.etcd.network: 'ipsec'
         io.rancher.operator.etcd.backup: '${ENABLE_BACKUPS}'
         io.rancher.operator.etcd.backup.interval: '${BACKUP_INTERVAL}'
@@ -45,9 +43,7 @@ kubelet:
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
         io.rancher.scheduler.global: "true"
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: compute=true
-        {{- end }}
     command:
         - kubelet
         - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
@@ -83,7 +79,6 @@ kubelet:
     links:
         - kubernetes
 
-{{- if eq .Values.CONSTRAINT_TYPE "required" }}
 kubelet-unschedulable:
     labels:
         io.rancher.container.dns: "true"
@@ -126,15 +121,12 @@ kubelet-unschedulable:
     privileged: true
     links:
         - kubernetes
-{{- end }}
 
 proxy:
     labels:
         io.rancher.container.dns: "true"
         io.rancher.scheduler.global: "true"
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: compute=true
-        {{- end }}
     command:
         - kube-proxy
         - --master=http://kubernetes.kubernetes.rancher.internal
@@ -148,9 +140,7 @@ proxy:
 
 kubernetes:
     labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
         io.rancher.sidekicks: kube-hostname-updater
@@ -191,9 +181,7 @@ kube-hostname-updater:
 
 kubectld:
     labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
         io.rancher.k8s.kubectld: "true"
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent_service.kubernetes_stack: "true"
@@ -210,10 +198,9 @@ scheduler:
         - --master=http://kubernetes.kubernetes.rancher.internal
         - --address=0.0.0.0
     image: rancher/k8s:v1.6.2-rancher3-3
-    {{- if eq .Values.CONSTRAINT_TYPE "required" }}
     labels:
+        io.rancher.scheduler.global: "true"
         io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
     links:
         - kubernetes
 
@@ -228,9 +215,8 @@ controller-manager:
         - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
     image: rancher/k8s:v1.6.2-rancher3-3
     labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
+        io.rancher.scheduler.global: "true"
         io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
     links:
@@ -238,9 +224,7 @@ controller-manager:
 
 rancher-kubernetes-agent:
     labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent_service.labels_provider: "true"
     environment:
@@ -256,9 +240,7 @@ rancher-kubernetes-agent:
 rancher-ingress-controller:
     image: rancher/lb-service-rancher:v0.6.1
     labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environment
     environment:
@@ -283,9 +265,7 @@ rancher-ingress-controller:
 rancher-kubernetes-auth:
     image: rancher/kubernetes-auth:v0.0.1
     labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
 
@@ -293,9 +273,7 @@ rancher-kubernetes-auth:
 addon-starter:
     image: rancher/k8s:v1.6.2-rancher3-3
     labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
         io.rancher.container.create_agent: 'true'
         io.rancher.container.agent.role: environmentAdmin
     environment:
