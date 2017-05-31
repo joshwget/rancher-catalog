@@ -315,3 +315,4 @@ lb:
             - source_port: 6443
               target_port: 6443
               service: kubernetes
+              protocol: tcp
