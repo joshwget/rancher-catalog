@@ -168,7 +168,7 @@ controller-manager:
         - --leader-elect=true
     environment:
         KUBERNETES_URL: https://localhost:6443
-    image: rancher/k8s:v1.6.4-rancher1-1
+    image: joshwget/k8s
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
@@ -187,7 +187,7 @@ scheduler:
         - --leader-elect=true
     environment:
         KUBERNETES_URL: https://localhost:6443
-    image: rancher/k8s:v1.6.4-rancher1-1
+    image: joshwget/k8s
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
