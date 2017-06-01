@@ -130,28 +130,6 @@ rancher-kubernetes-agent:
         initializing_timeout: 60000
         reinitializing_timeout: 60000
 
-scheduler:
-    health_check:
-        request_line: GET /healthz HTTP/1.0
-        port: 10251
-        interval: 2000
-        response_timeout: 2000
-        unhealthy_threshold: 3
-        healthy_threshold: 2
-        initializing_timeout: 60000
-        reinitializing_timeout: 60000
-
-controller-manager:
-    health_check:
-        request_line: GET /healthz HTTP/1.0
-        port: 10252
-        interval: 2000
-        response_timeout: 2000
-        unhealthy_threshold: 3
-        healthy_threshold: 2
-        initializing_timeout: 60000
-        reinitializing_timeout: 60000
-
 kubectld:
     health_check:
         port: 10240
