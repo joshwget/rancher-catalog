@@ -196,6 +196,7 @@ scheduler:
         - kube-scheduler
         - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
         - --address=0.0.0.0
+        - --leader-elect=true
     image: rancher/k8s:v1.6.4-rancher1-1
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
@@ -214,6 +215,7 @@ controller-manager:
         - --address=0.0.0.0
         - --root-ca-file=/etc/kubernetes/ssl/ca.pem
         - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
+        - --leader-elect=true
     image: rancher/k8s:v1.6.4-rancher1-1
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
