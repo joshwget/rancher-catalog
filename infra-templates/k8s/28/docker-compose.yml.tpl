@@ -122,7 +122,7 @@ etcd:
     - etcd:/pdata:z
     - /var/etcd/backups:/data-backup:z
 
-kubernetes:
+orch:
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
@@ -314,7 +314,7 @@ addon-starter:
         - kubernetes
 {{- end }}
 
-lb:
+kubernetes:
     image: rancher/lb-service-haproxy:v0.7.4
     ports:
         - 6443
@@ -322,5 +322,5 @@ lb:
         port_rules:
             - source_port: 6443
               target_port: 6443
-              service: kubernetes
+              service: orch
               protocol: tcp

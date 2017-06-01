@@ -86,10 +86,8 @@
     required: true
     default: 5000
     type: int
-kubernetes:
-    metadata:
-        sans:
-        - "IP:10.43.0.1"
+
+orch:
     health_check:
         port: 6443
         interval: 2000
@@ -98,6 +96,11 @@ kubernetes:
         healthy_threshold: 2
         initializing_timeout: 60000
         reinitializing_timeout: 60000
+
+kubernetes:
+    metadata:
+        sans:
+        - "IP:10.43.0.1"
     retain_ip: true
 
 etcd:
