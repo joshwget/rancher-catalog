@@ -315,14 +315,13 @@ addon-starter:
 {{- end }}
 
 kubernetes:
-    image: rancher/lb-service-haproxy:v0.7.4
-    ports:
-        - 6443
-    lb_config:
-        port_rules:
-            - source_port: 6443
-              target_port: 6443
-              service: orch
-              protocol: tcp
-    links:
-    - orch
+    image: nginx
+    #image: rancher/lb-service-haproxy:v0.7.4
+    #ports:
+    #    - 6443
+    #lb_config:
+    #    port_rules:
+    #        - source_port: 6443
+    #          target_port: 6443
+    #          service: orch
+    #          protocol: tcp
