@@ -97,11 +97,11 @@ orch:
         initializing_timeout: 60000
         reinitializing_timeout: 60000
 
-kubernetes:
-    metadata:
-        sans:
-        - "IP:10.43.0.1"
-    retain_ip: true
+#kubernetes:
+#    metadata:
+#        sans:
+#        - "IP:10.43.0.1"
+#    retain_ip: true
 
 etcd:
     retain_ip: true
