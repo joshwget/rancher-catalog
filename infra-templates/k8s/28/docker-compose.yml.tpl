@@ -324,3 +324,5 @@ kubernetes:
               target_port: 6443
               service: orch
               protocol: tcp
+    links:
+    - orch
