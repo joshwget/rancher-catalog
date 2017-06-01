@@ -151,7 +151,7 @@ orch:
         {{- end }}
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
-    image: rancher/k8s:v1.6.4-rancher1-1
+    image: joshwget/k8s
     links:
         - etcd
         - rancher-kubernetes-auth
