@@ -129,7 +129,7 @@ kubernetes:
         {{- end }}
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
-        io.rancher.sidekicks: kube-hostname-updater
+        io.rancher.sidekicks: controller-manager,scheduler,kube-hostname-updater
     command:
         - kube-apiserver
         - --storage-backend=etcd2
@@ -155,6 +155,47 @@ kubernetes:
     links:
         - etcd
         - rancher-kubernetes-auth
+
+controller-manager:
+    net: container:kubernetes
+    command:
+        - kube-controller-manager
+        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
+        - --cloud-provider=${CLOUD_PROVIDER}
+        - --address=0.0.0.0
+        - --root-ca-file=/etc/kubernetes/ssl/ca.pem
+        - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
+        - --leader-elect=true
+    environment:
+        KUBERNETES_URL: https://localhost:6443
+    image: rancher/k8s:v1.6.4-rancher1-1
+    labels:
+        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
+        io.rancher.scheduler.affinity:host_label: orchestration=true
+        {{- end }}
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent.role: environmentAdmin
+    links:
+        - kubernetes
+
+scheduler:
+    net: container:kubernetes
+    command:
+        - kube-scheduler
+        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
+        - --address=0.0.0.0
+        - --leader-elect=true
+    environment:
+        KUBERNETES_URL: https://localhost:6443
+    image: rancher/k8s:v1.6.4-rancher1-1
+    labels:
+        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
+        io.rancher.scheduler.affinity:host_label: orchestration=true
+        {{- end }}
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent.role: environmentAdmin
+    links:
+        - kubernetes
 
 kube-hostname-updater:
     net: container:kubernetes
@@ -190,41 +231,6 @@ kubectl-shell:
         - infinity
     image: rancher/kubectld:v0.6.5
     privileged: true
-
-scheduler:
-    command:
-        - kube-scheduler
-        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
-        - --address=0.0.0.0
-        - --leader-elect=true
-    image: rancher/k8s:v1.6.4-rancher1-1
-    labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
-        io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
-        io.rancher.container.create_agent: "true"
-        io.rancher.container.agent.role: environmentAdmin
-    links:
-        - kubernetes
-
-controller-manager:
-    command:
-        - kube-controller-manager
-        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
-        - --cloud-provider=${CLOUD_PROVIDER}
-        - --address=0.0.0.0
-        - --root-ca-file=/etc/kubernetes/ssl/ca.pem
-        - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
-        - --leader-elect=true
-    image: rancher/k8s:v1.6.4-rancher1-1
-    labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
-        io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
-        io.rancher.container.create_agent: "true"
-        io.rancher.container.agent.role: environmentAdmin
-    links:
-        - kubernetes
 
 rancher-kubernetes-agent:
     labels:
