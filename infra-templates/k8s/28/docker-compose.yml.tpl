@@ -124,6 +124,7 @@ etcd:
 
 orch:
     labels:
+        io.rancher.scheduler.global: "true"
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
         {{- end }}
