@@ -122,14 +122,15 @@ etcd:
     - etcd:/pdata:z
     - /var/etcd/backups:/data-backup:z
 
-kubernetes:
+orch:
     labels:
+        io.rancher.scheduler.global: "true"
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
         {{- end }}
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
-        io.rancher.sidekicks: kube-hostname-updater
+        io.rancher.sidekicks: controller-manager,scheduler,kube-hostname-updater
     command:
         - kube-apiserver
         - --storage-backend=etcd2
@@ -151,18 +152,59 @@ kubernetes:
         {{- end }}
     environment:
         KUBERNETES_URL: https://kubernetes.kubernetes.rancher.internal:6443
-    image: rancher/k8s:v1.6.4-rancher1-1
+    image: joshwget/k8s
     links:
         - etcd
         - rancher-kubernetes-auth
 
+controller-manager:
+    net: container:orch
+    command:
+        - kube-controller-manager
+        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
+        - --cloud-provider=${CLOUD_PROVIDER}
+        - --address=0.0.0.0
+        - --root-ca-file=/etc/kubernetes/ssl/ca.pem
+        - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
+        - --leader-elect=true
+    environment:
+        KUBERNETES_URL: https://localhost:6443
+    image: joshwget/k8s
+    labels:
+        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
+        io.rancher.scheduler.affinity:host_label: orchestration=true
+        {{- end }}
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent.role: environmentAdmin
+    links:
+        - orch
+
+scheduler:
+    net: container:orch
+    command:
+        - kube-scheduler
+        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
+        - --address=0.0.0.0
+        - --leader-elect=true
+    environment:
+        KUBERNETES_URL: https://localhost:6443
+    image: joshwget/k8s
+    labels:
+        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
+        io.rancher.scheduler.affinity:host_label: orchestration=true
+        {{- end }}
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent.role: environmentAdmin
+    links:
+        - orch
+
 kube-hostname-updater:
-    net: container:kubernetes
+    net: container:orch
     command:
         - etc-host-updater
     image: rancher/etc-host-updater:v0.0.2
     links:
-        - kubernetes
+        - orch
 
 kubectld:
     labels:
@@ -190,39 +232,6 @@ kubectl-shell:
         - infinity
     image: rancher/kubectld:v0.6.5
     privileged: true
-
-scheduler:
-    command:
-        - kube-scheduler
-        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
-        - --address=0.0.0.0
-    image: rancher/k8s:v1.6.4-rancher1-1
-    labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
-        io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
-        io.rancher.container.create_agent: "true"
-        io.rancher.container.agent.role: environmentAdmin
-    links:
-        - kubernetes
-
-controller-manager:
-    command:
-        - kube-controller-manager
-        - --kubeconfig=/etc/kubernetes/ssl/kubeconfig
-        - --cloud-provider=${CLOUD_PROVIDER}
-        - --address=0.0.0.0
-        - --root-ca-file=/etc/kubernetes/ssl/ca.pem
-        - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
-    image: rancher/k8s:v1.6.4-rancher1-1
-    labels:
-        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
-        io.rancher.scheduler.affinity:host_label: orchestration=true
-        {{- end }}
-        io.rancher.container.create_agent: "true"
-        io.rancher.container.agent.role: environmentAdmin
-    links:
-        - kubernetes
 
 rancher-kubernetes-agent:
     labels:
@@ -305,3 +314,14 @@ addon-starter:
     links:
         - kubernetes
 {{- end }}
+
+kubernetes:
+    image: rancher/lb-service-haproxy:v0.7.4
+    ports:
+        - 6443
+    lb_config:
+        port_rules:
+            - source_port: 6443
+              target_port: 6443
+              service: orch
+              protocol: tcp

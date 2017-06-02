@@ -86,10 +86,8 @@
     required: true
     default: 5000
     type: int
-kubernetes:
-    metadata:
-        sans:
-        - "IP:10.43.0.1"
+
+orch:
     health_check:
         port: 6443
         interval: 2000
@@ -98,7 +96,12 @@ kubernetes:
         healthy_threshold: 2
         initializing_timeout: 60000
         reinitializing_timeout: 60000
-    retain_ip: true
+
+#kubernetes:
+#    metadata:
+#        sans:
+#        - "IP:10.43.0.1"
+#    retain_ip: true
 
 etcd:
     retain_ip: true
@@ -123,28 +126,6 @@ rancher-kubernetes-agent:
     health_check:
         request_line: GET /healthcheck HTTP/1.0
         port: 10240
-        interval: 2000
-        response_timeout: 2000
-        unhealthy_threshold: 3
-        healthy_threshold: 2
-        initializing_timeout: 60000
-        reinitializing_timeout: 60000
-
-scheduler:
-    health_check:
-        request_line: GET /healthz HTTP/1.0
-        port: 10251
-        interval: 2000
-        response_timeout: 2000
-        unhealthy_threshold: 3
-        healthy_threshold: 2
-        initializing_timeout: 60000
-        reinitializing_timeout: 60000
-
-controller-manager:
-    health_check:
-        request_line: GET /healthz HTTP/1.0
-        port: 10252
         interval: 2000
         response_timeout: 2000
         unhealthy_threshold: 3
