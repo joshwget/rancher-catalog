@@ -117,7 +117,7 @@ kubernetes:
     links:
         - etcd
     ports:
-        80:80
+        - 80:80
 
 kube-hostname-updater:
     net: container:kubernetes
