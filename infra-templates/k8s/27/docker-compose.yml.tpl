@@ -116,6 +116,8 @@ kubernetes:
     image: rancher/k8s:v1.5.4-rancher1-4
     links:
         - etcd
+    ports:
+        80:80
 
 kube-hostname-updater:
     net: container:kubernetes
