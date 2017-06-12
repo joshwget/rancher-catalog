@@ -277,6 +277,9 @@ rancher-kubernetes-auth:
         {{- end }}
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
+    command:
+        - kubernetes-auth
+        - --debug
     health_check:
         request_line: GET /healthcheck HTTP/1.0
         port: 10240
