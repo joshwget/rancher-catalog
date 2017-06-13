@@ -190,8 +190,7 @@ kubectl-shell:
         io.rancher.k8s.kubectld: "true"
         io.rancher.k8s.token: "true"
     command:
-        - sleep
-        - infinity
+        - kubectl-shell-entry.sh
     image: joshwget/kubectld
     privileged: true
 
