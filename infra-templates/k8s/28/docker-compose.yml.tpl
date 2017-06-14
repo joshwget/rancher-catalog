@@ -176,7 +176,7 @@ kubectld:
     environment:
         SERVER: http://kubernetes.kubernetes.rancher.internal
         LISTEN: ":8091"
-    image: rancher/kubectld:v0.6.5
+    image: rancher/kubectld:v0.6.6
     links:
         - kubernetes
 
@@ -185,12 +185,13 @@ kubectl-shell:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
         {{- end }}
+        io.rancher.container.create_agent: "true"
+        io.rancher.container.agent.role: environmentAdmin
         io.rancher.k8s.kubectld: "true"
         io.rancher.k8s.token: "true"
     command:
-        - sleep
-        - infinity
-    image: rancher/kubectld:v0.6.5
+        - kubectl-shell-entry.sh
+    image: rancher/kubectld:v0.6.6
     privileged: true
 
 scheduler:
