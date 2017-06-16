@@ -252,6 +252,7 @@ rancher-kubernetes-agent-upgrader:
         {{- end }}
         io.rancher.container.create_agent: 'true'
         io.rancher.container.agent.role: environmentAdmin
+        io.rancher.container.start_once: 'true'
 
 {{- if eq .Values.ENABLE_RANCHER_INGRESS_CONTROLLER "true" }}
 rancher-ingress-controller:
