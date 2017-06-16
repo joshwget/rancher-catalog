@@ -244,6 +244,15 @@ rancher-kubernetes-agent:
     links:
         - kubernetes
 
+rancher-kubernetes-agent-upgrader:
+    image: joshwget/up
+    labels:
+        {{- if eq .Values.CONSTRAINT_TYPE "required" }}
+        io.rancher.scheduler.affinity:host_label: orchestration=true
+        {{- end }}
+        io.rancher.container.create_agent: 'true'
+        io.rancher.container.agent.role: environmentAdmin
+
 {{- if eq .Values.ENABLE_RANCHER_INGRESS_CONTROLLER "true" }}
 rancher-ingress-controller:
     image: rancher/lb-service-rancher:v0.7.4
