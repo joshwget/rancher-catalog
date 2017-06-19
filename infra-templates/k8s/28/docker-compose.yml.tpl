@@ -138,7 +138,7 @@ kubernetes:
         - --service-cluster-ip-range=10.43.0.0/16
         - --etcd-servers=http://etcd.kubernetes.rancher.internal:2379
         - --insecure-bind-address=0.0.0.0
-        - --insecure-port=0
+        - --insecure-port=80
         - --cloud-provider=${CLOUD_PROVIDER}
         - --allow_privileged=true
         - --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,PersistentVolumeLabel,DefaultStorageClass,ResourceQuota,DefaultTolerationSeconds
@@ -157,6 +157,8 @@ kubernetes:
     links:
         - etcd
         - rancher-kubernetes-auth
+    ports:
+        - 80:80
 
 kube-hostname-updater:
     net: container:kubernetes
