@@ -107,7 +107,7 @@ proxy:
         - kubernetes
 
 etcd:
-    image: llparse/etcd:v3.0.17
+    image: rancher/etcd:v2.3.7-11
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: etcd=true
@@ -136,7 +136,7 @@ kubernetes:
         io.rancher.websocket.proxy.scheme: "https"
     command:
         - kube-apiserver
-        - --storage-backend=etcd3
+        - --storage-backend=etcd2
         - --service-cluster-ip-range=10.43.0.0/16
         - --etcd-servers=http://etcd.kubernetes.rancher.internal:2379
         - --insecure-bind-address=0.0.0.0
