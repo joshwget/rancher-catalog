@@ -17,3 +17,9 @@ If you set the "Plane Isolation" field to `required`, the host labels, `compute=
 ### KubeDNS
 
 KubeDNS is enabled for name resolution as described in the [Kubernetes DNS docs](http://kubernetes.io/docs/admin/dns/). The DNS service IP address is `10.43.0.10`.
+
+### Software Versions
+
+* [Etcd v2.3.7](https://github.com/coreos/etcd/releases/tag/v2.3.7)
+
+* [Kubernetes v1.7.0-rancher1](https://github.com/rancher/kubernetes/tree/v1.7.0-rancher1)
