@@ -2,7 +2,7 @@
 
 ### Software Versions
 
-* [Kubernetes v1.7.0-rancher1](https://github.com/rancher/kubernetes/tree/v1.7.0-rancher1)
+* [Kubernetes v1.7.0](https://github.com/rancher/kubernetes/tree/v1.7.0-rancher1)
 * [Etcd v2.3.7](https://github.com/coreos/etcd/releases/tag/v2.3.7)
 
 ### Required Open Ports on hosts
