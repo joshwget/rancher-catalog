@@ -2,8 +2,6 @@
   name: Kubernetes
   version: v1.7.0-rancher3-etcdv3
   description: Rancher Kubernetes service
-  minimum_rancher_version: v1.6.5-rc1
-  upgrade_from: v0.0.0
   questions:
   - variable: CONSTRAINT_TYPE
     label: Plane Isolation
