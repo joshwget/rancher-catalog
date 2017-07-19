@@ -247,7 +247,7 @@ rancher-cloud-controller-manager:
         - --cloud-provider=rancher
         - --address=0.0.0.0
         - --service-account-private-key-file=/etc/kubernetes/ssl/key.pem
-    image: rancher/k8s:v1.7.0-rancher3
+    image: joshwget/k8s
     labels:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
