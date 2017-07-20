@@ -13,9 +13,7 @@ kubelet:
         - --api_servers=https://kubernetes.kubernetes.rancher.internal:6443
         - --allow-privileged=true
         - --register-node=true
-        {{- if ne .Values.CLOUD_PROVIDER "rancher" }}
-        - --cloud-provider=${CLOUD_PROVIDER}
-        {{- end }}
+        - --cloud-provider=external
         - --healthz-bind-address=0.0.0.0
         - --cluster-dns=10.43.0.10
         - --cluster-domain=cluster.local
