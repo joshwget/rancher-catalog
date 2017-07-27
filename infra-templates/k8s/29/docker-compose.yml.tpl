@@ -207,7 +207,7 @@ kubectl-shell:
         io.rancher.k8s.token: "true"
     command:
         - kubectl-shell-entry.sh
-    image: rancher/kubectld:v0.8.1
+    image: joshwget/kubectld
     privileged: true
     health_check:
         port: 10240
