@@ -26,9 +26,6 @@ kubelet:
         {{- else if (ne .Values.POD_INFRA_CONTAINER_IMAGE "") }}
         - --pod-infra-container-image=${POD_INFRA_CONTAINER_IMAGE}
         {{- end }}
-        {{- range $i, $elem := splitPreserveQuotes .Values.ADDITIONAL_KUBELET_FLAGS }}
-        - {{ $elem }}
-        {{- end }}
     image: rancher/k8s:v1.7.0-rancher3
     volumes:
         - /run:/run
@@ -73,9 +70,6 @@ kubelet-unschedulable:
         - --pod-infra-container-image=${POD_INFRA_CONTAINER_IMAGE}
         {{- end }}
         - --register-schedulable=false
-        {{- range $i, $elem := splitPreserveQuotes .Values.ADDITIONAL_KUBELET_FLAGS }}
-        - {{ $elem }}
-        {{- end }}
     image: rancher/k8s:v1.7.0-rancher3
     volumes:
         - /run:/run
