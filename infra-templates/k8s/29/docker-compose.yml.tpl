@@ -28,9 +28,6 @@ kubelet:
         {{- else if (ne .Values.POD_INFRA_CONTAINER_IMAGE "") }}
         - --pod-infra-container-image=${POD_INFRA_CONTAINER_IMAGE}
         {{- end }}
-        {{- range $i, $elem := splitPreserveQuotes .Values.ADDITIONAL_KUBELET_FLAGS }}
-        - {{ $elem }}
-        {{- end }}
     image: rancher/k8s:v1.7.2-rancher5
     volumes:
         - /run:/run
@@ -80,9 +77,6 @@ kubelet-unschedulable:
         - --pod-infra-container-image=${POD_INFRA_CONTAINER_IMAGE}
         {{- end }}
         - --register-schedulable=false
-        {{- range $i, $elem := splitPreserveQuotes .Values.ADDITIONAL_KUBELET_FLAGS }}
-        - {{ $elem }}
-        {{- end }}
     image: rancher/k8s:v1.7.2-rancher5
     volumes:
         - /run:/run
@@ -326,6 +320,7 @@ rancher-kubernetes-auth:
         {{- if eq .Values.CONSTRAINT_TYPE "required" }}
         io.rancher.scheduler.affinity:host_label: orchestration=true
         {{- end }}
+        io.rancher.stack_service.name: kubernetes/kubernetes
         io.rancher.container.create_agent: "true"
         io.rancher.container.agent.role: environmentAdmin
     health_check:
