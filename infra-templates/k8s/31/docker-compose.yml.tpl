@@ -334,6 +334,6 @@ addon-starter:
         response_timeout: 2000
         unhealthy_threshold: 3
         healthy_threshold: 2
-        initializing_timeout: 60000
-        reinitializing_timeout: 60000
+        initializing_timeout: 180000
+        reinitializing_timeout: 180000
 {{- end }}
