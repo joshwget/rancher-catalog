@@ -1,0 +1,3 @@
+name: addon-service-account
+labels:
+  io.rancher.certified: rancher
